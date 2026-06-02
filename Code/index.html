@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MotoSoul - Мотоэкипировка</title>
+    <link rel="stylesheet" href="styles/main.css?v=3">
+</head>
+<body>
+<div id="ms-app">
+    <nav class="ms-nav" aria-label="Главное меню">
+        <div class="ms-logo" onclick="window.showPage('home')">MOTO<span>SOUL</span></div>
+        <div class="ms-nav-links">
+            <button class="ms-nav-link active" onclick="window.showPage('home')">Главная</button>
+            <button class="ms-nav-link" onclick="window.showPage('shop')">Магазин</button>
+            <button class="ms-nav-link" onclick="window.showPage('forum')">Форум</button>
+            <button class="ms-nav-link" onclick="window.showPage('account')">Аккаунт</button>
+        </div>
+        <div class="ms-nav-actions">
+            <button class="ms-user-btn" onclick="window.showPage('auth')" id="nav-auth-btn">
+                <span id="nav-user-label">Войти</span>
+            </button>
+            <button class="ms-cart-btn" onclick="window.showPage('cart')">
+                Корзина
+                <span class="ms-cart-count" id="cart-count">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="ms-main">
+    <div id="page-home" class="ms-page active">
+        <div class="ms-hero">
+            <div class="ms-hero-tag">Экипировка для настоящих</div>
+            <h1>ЗАЩИТА<br>СТИЛЬ СКОРОСТЬ</h1>
+            <p>Профессиональная мотоэкипировка для тех, кто живёт дорогой Позиции от ведущих брендов</p>
+            <button class="ms-btn-primary" onclick="window.showPage('shop')">Каталог товаров</button>
+            <button class="ms-btn-secondary" onclick="window.showPage('forum')">Форум MotoSoul</button>
+        </div>
+        <div class="ms-stats">
+            <div class="ms-stat"><div class="ms-stat-num">500+</div><div class="ms-stat-label">Товаров</div></div>
+            <div class="ms-stat"><div class="ms-stat-num">2.4K</div><div class="ms-stat-label">Клиентов</div></div>
+            <div class="ms-stat"><div class="ms-stat-num">95%</div><div class="ms-stat-label">Довольных</div></div>
+            <div class="ms-stat"><div class="ms-stat-num">12</div><div class="ms-stat-label">Брендов</div></div>
+        </div>
+        <div class="ms-section">
+            <div class="ms-section-title">ПОПУЛЯРНЫЕ ТОВАРЫ</div>
+            <div class="ms-section-subtitle">Хиты продаж этого сезона</div>
+            <div class="ms-products" id="home-products"></div>
+        </div>
+    </div>
+
+    <div id="page-shop" class="ms-page">
+        <div class="ms-section">
+            <div class="ms-section-title">КАТАЛОГ ЭКИПИРОВКИ</div>
+            <div class="ms-section-subtitle">Выберите категорию</div>
+            <div class="ms-cats" id="cat-filter"></div>
+            <div class="ms-products" id="shop-products"></div>
+        </div>
+    </div>
+
+    <div id="page-forum" class="ms-page">
+        <div class="ms-forum">
+            <div class="ms-forum-header">
+                <div class="ms-forum-title">ФОРУМ</div>
+                <button class="ms-post-btn" onclick="window.toggleNewPost()">+ Новая тема</button>
+            </div>
+            <div id="new-post-form" style="display:none">
+                <div class="ms-new-post">
+                    <div class="ms-new-post-title">Создать новую тему</div>
+                    <div id="post-auth-warning" class="ms-error-banner" style="display:none">Войдите в аккаунт, чтобы создавать темы</div>
+                    <div class="ms-field">
+                        <label>Категория</label>
+                        <select id="post-cat">
+                            <option value="Маршруты">Маршруты</option>
+                            <option value="Техника">Техника</option>
+                            <option value="Экипировка">Экипировка</option>
+                            <option value="Мероприятия">Мероприятия</option>
+                            <option value="Разное">Разное</option>
+                        </select>
+                    </div>
+                    <div class="ms-field">
+                        <label>Заголовок темы</label>
+                        <input type="text" id="post-title" placeholder="Введите заголовок..." />
+                    </div>
+                    <div class="ms-field">
+                        <label>Текст сообщения</label>
+                        <textarea id="post-text" placeholder="Расскажите о своём опыте..."></textarea>
+                    </div>
+                    <button class="ms-form-btn" onclick="window.submitPost()">Опубликовать тему</button>
+                </div>
+            </div>
+            <div class="ms-forum-cats" id="forum-cats"></div>
+            <div id="forum-threads"></div>
+        </div>
+    </div>
+
+    <div id="page-cart" class="ms-page">
+        <div class="ms-cart-page">
+            <div class="ms-cart-header">
+                <div class="ms-cart-title">КОРЗИНА</div>
+                <button class="ms-btn-secondary" onclick="window.showPage('shop')">← Продолжить покупки</button>
+            </div>
+            <div id="cart-items"></div>
+        </div>
+    </div>
+
+    <div id="page-auth" class="ms-page">
+        <div class="ms-auth">
+            <div class="ms-auth-tabs">
+                <button class="ms-auth-tab active" onclick="window.switchAuthTab('login')">Вход</button>
+                <button class="ms-auth-tab" onclick="window.switchAuthTab('register')">Регистрация</button>
+            </div>
+            <div id="auth-login">
+                <div class="ms-auth-title">ВХОД</div>
+                <div id="login-msg"></div>
+                <div class="ms-field"><label>Email</label><input type="email" id="login-email" placeholder="rider@motosoul.ru" /></div>
+                <div class="ms-field"><label>Пароль</label><input type="password" id="login-pass" placeholder="moto123" /></div>
+                <button class="ms-form-btn" onclick="window.doLogin()">Войти в аккаунт</button>
+                <div class="ms-auth-note" style="margin-top:12px">Демо: rider@motosoul.ru / moto123</div>
+                <div class="ms-auth-note">Нет аккаунта? <a href="#" style="color:var(--ms-orange); text-decoration:none" onclick="window.switchAuthTab('register')">Зарегистрироваться</a></div>
+            </div>
+            <div id="auth-register" style="display:none">
+                <div class="ms-auth-title">РЕГИСТРАЦИЯ</div>
+                <div id="reg-msg"></div>
+                <div class="ms-field"><label>Имя</label><input type="text" id="reg-name" placeholder="Ваш никнейм" /></div>
+                <div class="ms-field"><label>Email</label><input type="email" id="reg-email" placeholder="rider@motosoul.ru" /></div>
+                <div class="ms-field"><label>Возраст</label><input type="number" id="reg-age" placeholder="25" min="16" max="99" /></div>
+                <div class="ms-field"><label>Пароль</label><input type="password" id="reg-pass" placeholder="Минимум 6 символов" /></div>
+                <button class="ms-form-btn" onclick="window.doRegister()">Создать аккаунт</button>
+                <div class="ms-auth-note">Уже есть аккаунт? <a href="#" style="color:var(--ms-orange); text-decoration:none" onclick="window.switchAuthTab('login')">Войти</a></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-account" class="ms-page">
+        <div class="ms-account">
+            <div class="ms-account-header">
+                <div class="ms-account-title">АККАУНТ</div>
+                <button class="ms-logout-btn" onclick="window.doLogout()">Выйти</button>
+            </div>
+            <div id="account-content"></div>
+        </div>
+    </div>
+    </main>
+
+    <footer class="ms-footer">
+        <div class="ms-footer-accent" aria-hidden="true"></div>
+        <div class="ms-footer-inner">
+            <div class="ms-footer-brand">MOTO<span>SOUL</span></div>
+            <p class="ms-footer-tagline">Профессиональная мотоэкипировка для тех, кто живёт дорогой</p>
+
+            <nav class="ms-footer-links" aria-label="Навигация в подвале">
+                <button type="button" onclick="window.showPage('home')">Главная</button>
+                <span class="ms-footer-dot" aria-hidden="true"></span>
+                <button type="button" onclick="window.showPage('shop')">Магазин</button>
+                <span class="ms-footer-dot" aria-hidden="true"></span>
+                <button type="button" onclick="window.showPage('forum')">Форум</button>
+                <span class="ms-footer-dot" aria-hidden="true"></span>
+                <button type="button" onclick="window.showPage('cart')">Корзина</button>
+                <span class="ms-footer-dot" aria-hidden="true"></span>
+                <button type="button" onclick="window.showPage('account')">Аккаунт</button>
+            </nav>
+
+            <div class="ms-footer-features">
+                <div class="ms-footer-feature">
+                    <span class="ms-footer-feature-num">5</span>
+                    <span class="ms-footer-feature-label">магазинов по Москве</span>
+                </div>
+                <div class="ms-footer-feature">
+                    <span class="ms-footer-feature-num">100%</span>
+                    <span class="ms-footer-feature-label">оригинальная продукция</span>
+                </div>
+                <div class="ms-footer-feature">
+                    <span class="ms-footer-feature-num">24/7</span>
+                    <span class="ms-footer-feature-label">форум сообщества</span>
+                </div>
+            </div>
+
+            <p class="ms-footer-contact">Связь: <a href="mailto:hello@motosoul.ru">hello@motosoul.ru</a></p>
+
+            <div class="ms-footer-divider" aria-hidden="true"></div>
+
+            <p class="ms-footer-copy">© 2026 MotoSoul · Защита · Стиль · Скорость</p>
+            <p class="ms-footer-legal">Все права защищены. Информация на сайте не является публичной офертой.</p>
+        </div>
+    </footer>
+
+    <div class="ms-notif" id="ms-notif"></div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/api.js"></script>
+<script src="js/render.js"></script>
+<script src="js/handlers.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
